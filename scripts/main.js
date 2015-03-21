@@ -1,43 +1,41 @@
-//Main javascript
-
-var canvas = document.getElementById("canvas");
-canvas.height = window.innerHeight;
+var canvas = document.getElementById('canvas');
 canvas.width = window.innerWidth;
-var canvasHeight = canvas.height,
-    canvasWidth = canvas.width,
-    ctx = canvas.getContext("2d"),
-    imgData = ctx.createImageData(canvasHeight, canvasWidth);
-console.log(window.innerWidth);
+canvas.height = window.innerHeight;
+var ctx = canvas.getContext("2d"),
+imgData = ctx.createImageData(canvas.width, canvas.height);
+
+console.log(canvas.height, canvas.width, 'width and height');
+console.log(window.innerWidth, canvas.width);
 
 var drawStatic = function (mousePosition) {
 
     //console.log(mousePosition.x);
+    imgData = ctx.createImageData(50, 50);
 
-
-    var rowSize = canvasWidth * 4,
-        mouseCenter = (mousePosition.x + mousePosition.y * canvasWidth) * 4,
-        boxSize = 20,
-        boxHeightStart = mouseCenter - rowSize * boxSize,
-        boxHeightEnd = mouseCenter + rowSize * boxSize,
-        boxWidthStart = (mousePosition.x - boxSize)*4,
-        boxWidthEnd = (mousePosition.x + boxSize)*4,
-        max = Math.min(imgData.data.length, mouseCenter);
-
-    for (var yOffset = boxHeightStart; yOffset < boxHeightEnd; yOffset += rowSize) {
-        for (var xOffset = boxWidthStart; xOffset < boxWidthEnd; xOffset += 4) {
-            var px = 4,
-                offset = yOffset + xOffset,
-                randomColor = Math.floor(Math.random() * 256);
-            while (--px) {
-                imgData.data[offset + px] = randomColor
-            }
-        }
+    for (i = 0 ; i < imgData.data.length ; i+=4 ){
+        var randomColor = Math.floor(Math.random()*256)
+        imgData.data[i+0] = randomColor;
+        imgData.data[i+1] = randomColor;
+        imgData.data[i+2] = randomColor;
+        imgData.data[i+3] = 255;
     }
 
+    ctx.putImageData(imgData, mousePosition.x, mousePosition.y);
+}
 
+var drawInitialStatic = function(){
+    imgData = ctx.createImageData(canvas.width, canvas.height);
 
+    for (i = 0 ; i < imgData.data.length ; i+=4 ){
+        var randomColor = Math.floor(Math.random()*256)
+        imgData.data[i+0] = randomColor;
+        imgData.data[i+1] = randomColor;
+        imgData.data[i+2] = randomColor;
+        imgData.data[i+3] = 255;
+    }
 
     ctx.putImageData(imgData, 0, 0);
+
 }
 
 var getMousePosition = function (canvas, e) {
@@ -55,5 +53,6 @@ var refresh = function (e) {
     });
 }
 
+drawInitialStatic();
 window.addEventListener('mousemove', refresh, false);
 window.requestAnimationFrame(drawStatic);
