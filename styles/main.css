@@ -1,1 +1,24 @@
 /* Main styles */
+*{
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+html,
+body,
+.overlay{
+    height: 100%;
+    width: 100%;
+}
+
+.overlay{
+    -webkit-box-shadow: inset 0px 0px 200px 0px rgba(0, 0, 0, 0.7);
+    -moz-box-shadow:    inset 0px 0px 200px 0px rgba(0, 0, 0, 0.7);
+    box-shadow: inset 0px 0px 200px 0px rgba(0, 0, 0, 0.7);
+}
+
+canvas,
+.overlay{
+  position: absolute; top: 0px; left: 0px;
+}

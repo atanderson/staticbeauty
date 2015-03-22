@@ -1,12 +1,15 @@
-var canvas = document.getElementById('canvas');
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
-var ctx = canvas.getContext("2d"),
-imgData = ctx.createImageData(canvas.width, canvas.height);
+var bgCanvas = document.getElementById('canvas');
+bgCanvas.width = window.innerWidth;
+bgCanvas.height = window.innerHeight;
+var topCanvas = document.getElementById('canvas1');
+topCanvas.width = window.innerWidth;
+topCanvas.height = window.innerHeight;
+var ctx = bgCanvas.getContext("2d");
+var topCtx = topCanvas.getContext("2d");
 
 var drawStatic = function (mousePosition) {
     var width = 200;
-    var imgData = ctx.createImageData(width, width);
+    var imgData = topCtx.createImageData(width, width);
 
     // for (i = 0 ; i < imgData.data.length ; i+=4 ){
     //     var randomColor = Math.floor(Math.random()*100)
@@ -15,13 +18,6 @@ var drawStatic = function (mousePosition) {
     //     imgData.data[i+2] = randomColor;
     //     imgData.data[i+3] = 255;
     // }
-
-    var width   = 200,
-        height  = width,
-        radius  = width/2,
-        centerX = width/2,
-        centerY = height/2;
-
     var crinkleDatPixelAt = function(i){
         var randomColor = Math.floor(Math.random()*100)
         imgData.data[i+0] = randomColor;
@@ -29,18 +25,23 @@ var drawStatic = function (mousePosition) {
         imgData.data[i+2] = randomColor;
         imgData.data[i+3] = 255;
     }
+    var width   = 200,
+        height  = width,
+        radius  = width/2 - 2,
+        centerX = width/2,
+        centerY = height/2;
 
-    for (var row = 0; row < height; row++){
+    for (var row = 0; row <= height; row++){
         //these values could be cached in an array where the index was row:
         // and row might need to be corrected since it comes from the top, with something like height-row, but it could also work fine
-        var xStart = Math.round(Math.sqrt(Math.pow(radius,2) - Math.pow(row-centerY, 2) + centerX)),
-            xEnd   = width - xStart;
-        for(var x = xStart; x <= xEnd; x++){
+        var xEnd = Math.round(Math.sqrt(Math.pow(radius,2) - Math.pow(row-centerY, 2)) + 0),
+            xStart   = -xEnd + 0;
+        for(var x = xStart - 100; x <= xEnd - 100; x++){
             crinkleDatPixelAt((row * width * 4) + (x * 4));
         }
     }
 
-    ctx.putImageData(imgData, mousePosition.x - 100, mousePosition.y - 100);
+    topCtx.putImageData(imgData, mousePosition.x - 100, mousePosition.y - 100);
 }
 
 var drawInitialStatic = function(){
