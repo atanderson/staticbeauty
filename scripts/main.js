@@ -10,31 +10,46 @@ var crinkleDatPixelAt = function(data, max, i){
     data[i+2] = randomColor;
     data[i+3] = 255;
 }
+var drawStatic = (function(){
+    var width     = 200,
+        trailSize = width*2/3,
+        height    = width,
+        radius    = width/2,
+        centerX   = width/2,
+        centerY   = height/2,
+        colorMax  = 145,
+        xEndByRow = [];
 
-var drawStatic = function (mousePosition) {
-    var width = 200;
-    var imgData = topCtx.createImageData(width, width);
-    topCtx.clearRect(0, 0, topCanvas.width, topCanvas.height);
-
-    var width   = 200,
-        height  = width,
-        radius  = width/2,
-        centerX = width/2,
-        centerY = height/2;
-
-    for (var row = 0; row <= height; row++){
-        //these values could be cached in an array where the index was row:
-        // and row might need to be corrected since it comes from the top, with something like height-row, but it could also work fine
-        var xEnd = Math.round(Math.sqrt(Math.pow(radius,2) - Math.pow(row-centerY, 2)) + 0),
-            xStart   = -xEnd + 0;
-        for(var x = xStart - 100; x <= xEnd - 100; x++){
-            var offset = (row * width * 4) + (x * 4);
-            crinkleDatPixelAt(imgData.data, 145, offset);
-        }
+    //precalculate the xEnd for every row
+    for (var row = 0; row <= height; row++) {
+        xEndByRow[row] = Math.round(Math.sqrt(Math.pow(radius,2) - Math.pow(row-centerY, 2)) + 0);
     }
 
-    topCtx.putImageData(imgData, mousePosition.x - 100, mousePosition.y - 100);
-}
+    return function (mousePosition) {
+        topCtx.clearRect(0, 0, topCanvas.width, topCanvas.height);
+        var imgData = topCtx.createImageData(width, width);
+
+        for (var row = 0; row <= height; row++) {
+            var xEnd   = xEndByRow[row],
+                xStart = -xEnd + 0;
+            for(var x = xStart - radius; x <= xEnd - radius; x++){
+                var offset = (row * width * 4) + (x * 4);
+                crinkleDatPixelAt(imgData.data, colorMax, offset);
+            }
+        }
+        topCtx.putImageData(imgData, mousePosition.x - 100, mousePosition.y - 100);
+
+        //draw a box in the lower context to make a "trail" like effect
+        lowerImg = ctx.createImageData(trailSize, trailSize);
+
+        for (i = 0 ; i < lowerImg.data.length ; i+=4 ){
+            crinkleDatPixelAt(lowerImg.data, 110, i);
+        }
+        ctx.putImageData(lowerImg, mousePosition.x-(trailSize/2), mousePosition.y-(trailSize/2));
+
+    }
+}());
+
 
 var drawInitialStatic = function(){
     bgCanvas.width = window.innerWidth;
