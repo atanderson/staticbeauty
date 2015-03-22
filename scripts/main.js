@@ -1,23 +1,13 @@
 var bgCanvas = document.getElementById('canvas');
-bgCanvas.width = window.innerWidth;
-bgCanvas.height = window.innerHeight;
 var topCanvas = document.getElementById('canvas1');
-topCanvas.width = window.innerWidth;
-topCanvas.height = window.innerHeight;
 var ctx = bgCanvas.getContext("2d");
 var topCtx = topCanvas.getContext("2d");
 
 var drawStatic = function (mousePosition) {
     var width = 200;
     var imgData = topCtx.createImageData(width, width);
-
-    // for (i = 0 ; i < imgData.data.length ; i+=4 ){
-    //     var randomColor = Math.floor(Math.random()*100)
-    //     imgData.data[i+0] = randomColor;
-    //     imgData.data[i+1] = randomColor;
-    //     imgData.data[i+2] = randomColor;
-    //     imgData.data[i+3] = 255;
-    // }
+    topCtx.clearRect(0, 0, topCanvas.width, topCanvas.height);
+    
     var crinkleDatPixelAt = function(i){
         var randomColor = Math.floor(Math.random()*100)
         imgData.data[i+0] = randomColor;
@@ -45,7 +35,11 @@ var drawStatic = function (mousePosition) {
 }
 
 var drawInitialStatic = function(){
-    var imgData = ctx.createImageData(canvas.width, canvas.height);
+    bgCanvas.width = window.innerWidth;
+    bgCanvas.height = window.innerHeight;
+    topCanvas.width = window.innerWidth;
+    topCanvas.height = window.innerHeight;
+    var imgData = ctx.createImageData(bgCanvas.width, bgCanvas.height);
 
     for (var i = 0 ; i < imgData.data.length ; i+=4 ){
         var randomColor = Math.floor(Math.random()*100)
@@ -76,4 +70,5 @@ var refresh = function (e) {
 
 drawInitialStatic();
 window.addEventListener('mousemove', refresh, false);
+window.addEventListener('resize', drawInitialStatic, false);
 window.requestAnimationFrame(drawStatic);
