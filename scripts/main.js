@@ -3,37 +3,63 @@ var topCanvas = document.getElementById('canvas1');
 var ctx = bgCanvas.getContext("2d");
 var topCtx = topCanvas.getContext("2d");
 
-var drawStatic = function (mousePosition) {
-    var width = 200;
-    var imgData = topCtx.createImageData(width, width);
-    topCtx.clearRect(0, 0, topCanvas.width, topCanvas.height);
-
-    var crinkleDatPixelAt = function(i){
-        var randomColor = Math.floor(Math.random()*100)
-        imgData.data[i+0] = randomColor;
-        imgData.data[i+1] = randomColor;
-        imgData.data[i+2] = randomColor;
-        imgData.data[i+3] = 255;
-    }
-    
-    var width   = 200,
-        height  = width,
-        radius  = width/2 - 2,
-        centerX = width/2,
-        centerY = height/2;
-
-    for (var row = 0; row <= height; row++){
-        //these values could be cached in an array where the index was row:
-        // and row might need to be corrected since it comes from the top, with something like height-row, but it could also work fine
-        var xEnd = Math.round(Math.sqrt(Math.pow(radius,2) - Math.pow(row-centerY, 2)) + 0),
-            xStart   = -xEnd + 0;
-        for(var x = xStart - 100; x <= xEnd - 100; x++){
-            crinkleDatPixelAt((row * width * 4) + (x * 4));
-        }
-    }
-
-    topCtx.putImageData(imgData, mousePosition.x - 100, mousePosition.y - 100);
+var crinkleDatPixelAt = function(data, max, i){
+    var randomColor = Math.floor(Math.random()*max);
+    data[i+0] = randomColor;
+    data[i+1] = randomColor;
+    data[i+2] = randomColor;
+    data[i+3] = 255;
 }
+var drawStatic = (function(){
+    var width     = 200,
+        trailSize = width*2/3,
+        height    = width,
+        radius    = width/2,
+        centerX   = width/2,
+        centerY   = height/2,
+        colorMax  = 145,
+        xEndByRow = [];
+
+    //precalculate the xEnd for every row
+    for (var row = 0; row <= height; row++) {
+        xEndByRow[row] = Math.round(Math.sqrt(Math.pow(radius,2) - Math.pow(row-centerY, 2)) + 0);
+    }
+
+    var initBackgroundMax  = 95,
+        endBackgroundMax   = 110,
+        backgroundColorMax = initBackgroundMax,
+        backroundDirection = 0.5;
+
+    return function (mousePosition) {
+        topCtx.clearRect(0, 0, topCanvas.width, topCanvas.height);
+        var imgData = topCtx.createImageData(width, width);
+
+        for (var row = 0; row <= height; row++) {
+            var xEnd   = xEndByRow[row],
+                xStart = -xEnd + 0;
+            for(var x = xStart - radius; x <= xEnd - radius; x++){
+                var offset = (row * width * 4) + (x * 4);
+                crinkleDatPixelAt(imgData.data, colorMax, offset);
+            }
+        }
+        topCtx.putImageData(imgData, mousePosition.x - radius, mousePosition.y - radius);
+
+        //draw a box in the lower context to make a "trail" like effect
+        lowerImg = ctx.createImageData(trailSize, trailSize);
+
+        backgroundColorMax += backroundDirection;
+        if(backgroundColorMax > endBackgroundMax || backgroundColorMax < initBackgroundMax){
+            backroundDirection *= -1;
+        }
+
+        for (i = 0 ; i < lowerImg.data.length ; i+=4 ){
+            crinkleDatPixelAt(lowerImg.data, backgroundColorMax, i);
+        }
+        ctx.putImageData(lowerImg, mousePosition.x-(trailSize/2), mousePosition.y-(trailSize/2));
+
+    }
+}());
+
 
 var drawInitialStatic = function(){
     bgCanvas.width = window.innerWidth;
@@ -43,11 +69,7 @@ var drawInitialStatic = function(){
     var imgData = ctx.createImageData(bgCanvas.width, bgCanvas.height);
 
     for (var i = 0 ; i < imgData.data.length ; i+=4 ){
-        var randomColor = Math.floor(Math.random()*100)
-        imgData.data[i+0] = randomColor;
-        imgData.data[i+1] = randomColor;
-        imgData.data[i+2] = randomColor;
-        imgData.data[i+3] = 255;
+        crinkleDatPixelAt(imgData.data, 100, i);
     }
 
     ctx.putImageData(imgData, 0, 0);
