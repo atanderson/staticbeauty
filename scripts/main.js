@@ -10,7 +10,7 @@ var topCtx = topCanvas.getContext("2d");
 var drawStatic = function (mousePosition) {
     var width = 200;
     var imgData = topCtx.createImageData(width, width);
-
+    topCtx.clearRect(0, 0, topCanvas.width, topCanvas.height);
     // for (i = 0 ; i < imgData.data.length ; i+=4 ){
     //     var randomColor = Math.floor(Math.random()*100)
     //     imgData.data[i+0] = randomColor;
