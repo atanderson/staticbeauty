@@ -25,6 +25,11 @@ var drawStatic = (function(){
         xEndByRow[row] = Math.round(Math.sqrt(Math.pow(radius,2) - Math.pow(row-centerY, 2)) + 0);
     }
 
+    var initBackgroundMax  = 95,
+        endBackgroundMax   = 110,
+        backgroundColorMax = initBackgroundMax,
+        backroundDirection = 0.5;
+
     return function (mousePosition) {
         topCtx.clearRect(0, 0, topCanvas.width, topCanvas.height);
         var imgData = topCtx.createImageData(width, width);
@@ -37,13 +42,18 @@ var drawStatic = (function(){
                 crinkleDatPixelAt(imgData.data, colorMax, offset);
             }
         }
-        topCtx.putImageData(imgData, mousePosition.x - 100, mousePosition.y - 100);
+        topCtx.putImageData(imgData, mousePosition.x - radius, mousePosition.y - radius);
 
         //draw a box in the lower context to make a "trail" like effect
         lowerImg = ctx.createImageData(trailSize, trailSize);
 
+        backgroundColorMax += backroundDirection;
+        if(backgroundColorMax > endBackgroundMax || backgroundColorMax < initBackgroundMax){
+            backroundDirection *= -1;
+        }
+
         for (i = 0 ; i < lowerImg.data.length ; i+=4 ){
-            crinkleDatPixelAt(lowerImg.data, 110, i);
+            crinkleDatPixelAt(lowerImg.data, backgroundColorMax, i);
         }
         ctx.putImageData(lowerImg, mousePosition.x-(trailSize/2), mousePosition.y-(trailSize/2));
 
