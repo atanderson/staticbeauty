@@ -3,22 +3,22 @@ var topCanvas = document.getElementById('canvas1');
 var ctx = bgCanvas.getContext("2d");
 var topCtx = topCanvas.getContext("2d");
 
+var crinkleDatPixelAt = function(data, i){
+    var randomColor = Math.floor(Math.random()*100)
+    data[i+0] = randomColor;
+    data[i+1] = randomColor;
+    data[i+2] = randomColor;
+    data[i+3] = 255;
+}
+
 var drawStatic = function (mousePosition) {
     var width = 200;
     var imgData = topCtx.createImageData(width, width);
     topCtx.clearRect(0, 0, topCanvas.width, topCanvas.height);
 
-    var crinkleDatPixelAt = function(i){
-        var randomColor = Math.floor(Math.random()*100)
-        imgData.data[i+0] = randomColor;
-        imgData.data[i+1] = randomColor;
-        imgData.data[i+2] = randomColor;
-        imgData.data[i+3] = 255;
-    }
-    
     var width   = 200,
         height  = width,
-        radius  = width/2 - 2,
+        radius  = width/2,
         centerX = width/2,
         centerY = height/2;
 
@@ -28,7 +28,8 @@ var drawStatic = function (mousePosition) {
         var xEnd = Math.round(Math.sqrt(Math.pow(radius,2) - Math.pow(row-centerY, 2)) + 0),
             xStart   = -xEnd + 0;
         for(var x = xStart - 100; x <= xEnd - 100; x++){
-            crinkleDatPixelAt((row * width * 4) + (x * 4));
+            var offset = (row * width * 4) + (x * 4);
+            crinkleDatPixelAt(imgData.data, offset);
         }
     }
 
