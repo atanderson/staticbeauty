@@ -30,13 +30,13 @@ var drawStatic = function (mousePosition) {
         imgData.data[i+3] = 255;
     }
 
-    for (var row = 0; row < radius; row++){
+    for (var row = 0; row < height; row++){
         //these values could be cached in an array where the index was row:
         // and row might need to be corrected since it comes from the top, with something like height-row, but it could also work fine
-        var xStart = Math.sqrt(Math.pow(radius,2) - Math.pow(row-centerY, 2) + centerX),
+        var xStart = Math.round(Math.sqrt(Math.pow(radius,2) - Math.pow(row-centerY, 2) + centerX)),
             xEnd   = width - xStart;
         for(var x = xStart; x <= xEnd; x++){
-            crinkleDatPixelAt(row * width * 4 + x * 4);
+            crinkleDatPixelAt((row * width * 4) + (x * 4));
         }
     }
 
