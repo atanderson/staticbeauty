@@ -33,13 +33,12 @@ var drawStatic = (function(){
             count: 255
         },
         frames = [
-            { blue: 1},
-            { red: -1},
-            { green: 1},
-            { blue: -1},
-            { red: 1},
-            { green: -1},
-            // { red: 255, count:1}
+            { blue:  +1 },
+            { red:   -1 },
+            { green: +1 },
+            { blue:  -1 },
+            { red:   +1 },
+            { green: -1 }
         ].map(function(obj){
             return Object.assign({}, defaultFrame, obj);
         }),
@@ -59,7 +58,7 @@ var drawStatic = (function(){
         currentCount += 1;
         if (currentCount > frame.count){
             currentCount = 0;
-            frameIndex = (frameIndex + 1) % (frames.length );
+            frameIndex = (frameIndex + 1) % frames.length;
         }
         //apply current frame
         Object.keys(currentValues).forEach( function(key) {
@@ -72,9 +71,9 @@ var drawStatic = (function(){
             if (xEnd != 0 && xStart != 0) {
                 var imgData = ctx.createImageData((Math.abs(xStart) + Math.abs(xEnd)), 1 );
                 for (var i = 0; i <= imgData.data.length ; i+= 4) {
-                    imgData.data[i+0] = currentValues.red;
-                    imgData.data[i+1] = currentValues.green;
-                    imgData.data[i+2] = currentValues.blue;
+                    imgData.data[i+0] = currentValues.red * Math.random();
+                    imgData.data[i+1] = currentValues.green * Math.random();
+                    imgData.data[i+2] = currentValues.blue * Math.random();
                     imgData.data[i+3] = currentValues.alpha;
                 }
                 ctx.putImageData(imgData, mousePosition.x - (imgData.data.length / 8), mousePosition.y + row - radius);
