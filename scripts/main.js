@@ -69,50 +69,51 @@ var drawRainbow = function(){
     canvas.height = window.innerHeight;
     var imgData = ctx.createImageData(canvas.width, canvas.height);
 
-    // var redInit =  255;
-    // var greenInit = 0;
-    // var blueInit = 0;
+    var redInit =  255;
+    var greenInit = 0;
+    var blueInit = 0;
 
-    // var previousRed;
-    // var previousGreen;
-    // var previousBlue;
+    var previousRed;
+    var previousGreen;
+    var previousBlue;
 
-    // var red = 255, 
-    // green = 0, 
-    // blue = 0, 
-    // alpha = 255;
+    var red = 255, 
+    green = 0, 
+    blue = 0, 
+    alpha = 255;
 
     for (var i = 0; i < imgData.data.length ; i += 4){
 
-        console.log(imgData.data[i - 4 + 0]);
-        console.log(imgData.data[i - 4 + 1]);
-        console.log(imgData.data[i - 4 + 2]);
+        if (i != 0){
+            previousRed = imgData.data[i - 4 + 0];
+            previousGreen = imgData.data[i - 4 + 1];
+            previousBlue = imgData.data[i - 4 + 2];
+        } else {
+            previousRed = redInit;
+            previousGreen = greenInit;
+            previousBlue = blueInit;
+        }
 
-
-        // console.log(previousRed);
-        // console.log(previousBlue);
-        // console.log(previousGreen);
-
-        //if (previousRed == 255 && previousBlue < 255 && previousGreen == 0){
-           // blue = previousBlue + 1;
-            //console.log('i tried to increment blue to', blue);
-         //} //else if (previousRed > 0 && previousBlue == 255 && previousGreen == 0){
-        //     red = previousRed - 1;
-        //     console.log('i tried to decrement red to', red);
-        // } else if (previousRed == 0 && previousBlue == 255 && previousGreen < 255){
-        //     green = previousGreen + 1;
-        // } else if (previousRed == 0 && previousBlue > 0 && previousGreen == 255){
-        //     blue = previousBlue - 1;
-        // } else if (previousRed < 255 && previousBlue == 0 && previousGreen == 255){
-        //     red = previousRed + 1;
-        // }
-        // imgData.data[i+0] = red;//dunno;
-        // imgData.data[i+1] = green;//dunno;
-        // imgData.data[i+2] = blue;//dunno;
-        // imgData.data[i+3] = alpha;
+        if (previousRed == 255 && previousBlue < 255 && previousGreen == 0){
+           blue = previousBlue + 1;
+            console.log('i tried to increment blue to', blue);
+         } else if (previousRed > 0 && previousBlue == 255 && previousGreen == 0){
+            red = previousRed - 1;
+            console.log('i tried to decrement red to', red);
+        } else if (previousRed == 0 && previousBlue == 255 && previousGreen < 255){
+            green = previousGreen + 1;
+        } else if (previousRed == 0 && previousBlue > 0 && previousGreen == 255){
+            blue = previousBlue - 1;
+        } else if (previousRed < 255 && previousBlue == 0 && previousGreen == 255){
+            red = previousRed + 1;
+        }
+        imgData.data[i+0] = red;//dunno;
+        imgData.data[i+1] = green;//dunno;
+        imgData.data[i+2] = blue;//dunno;
+        imgData.data[i+3] = alpha;
     }
 
-    //ctx.putImageData(imgData, 0, 0);
+    ctx.putImageData(imgData, 0, 0);
 }
 
 var getMousePosition = function (canvas, e) {
