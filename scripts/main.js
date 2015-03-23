@@ -34,7 +34,7 @@ var drawStatic = (function(){
         }
 
     return function (mousePosition) {
-      
+
         for (var row = 0; row <= height; row++) {
             var xEnd   = xEndByRow[row],
                 xStart = -xEnd + 0;
@@ -47,7 +47,7 @@ var drawStatic = (function(){
             }
 
         }
-        
+
     };
 }());
 
@@ -77,9 +77,9 @@ var drawRainbow = function(){
     var previousGreen;
     var previousBlue;
 
-    var red = 255, 
-    green = 0, 
-    blue = 0, 
+    var red = 255,
+    green = 0,
+    blue = 0,
     alpha = 255;
 
     for (var i = 0; i < imgData.data.length ; i += 4){
@@ -158,4 +158,4 @@ window.addEventListener('mousemove', showSecret, false);
 window.addEventListener('resize', drawInitialStatic, false);
 window.requestAnimationFrame(drawStatic);
 
-drawRainbow();
+window.requestAnimationFrame(drawRainbow);
