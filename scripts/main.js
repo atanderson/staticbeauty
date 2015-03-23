@@ -96,10 +96,8 @@ var drawRainbow = function(){
 
         if (previousRed == 255 && previousBlue < 255 && previousGreen == 0){
            blue = previousBlue + 1;
-            console.log('i tried to increment blue to', blue);
          } else if (previousRed > 0 && previousBlue == 255 && previousGreen == 0){
             red = previousRed - 1;
-            console.log('i tried to decrement red to', red);
         } else if (previousRed == 0 && previousBlue == 255 && previousGreen < 255){
             green = previousGreen + 1;
         } else if (previousRed == 0 && previousBlue > 0 && previousGreen == 255){
