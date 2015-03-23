@@ -106,6 +106,13 @@ var drawRainbow = function(){
             blue = previousBlue - 1;
         } else if (previousRed < 255 && previousBlue == 0 && previousGreen == 255){
             red = previousRed + 1;
+        } else {
+            previousRed = redInit;
+            previousGreen = greenInit;
+            previousBlue = blueInit;
+            red = previousRed;
+            green = previousGreen;
+            blue = previousBlue;
         }
         imgData.data[i+0] = red;//dunno;
         imgData.data[i+1] = green;//dunno;
