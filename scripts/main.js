@@ -42,12 +42,12 @@ var drawStatic = (function(){
         ].map(function(obj){
             return Object.assign({}, defaultFrame, obj);
         }),
+        currentCount = 0,
         currentValues = {
             red: 255,
             blue: 0,
             green: 0,
-            alpha: 255,
-            count: 0
+            alpha: 255
         },
         frameIndex = 0;
 
@@ -55,9 +55,9 @@ var drawStatic = (function(){
 
         var frame = frames[frameIndex];
 
-        currentValues.count += 1;
-        if (currentValues.count > frame.count){
-            currentValues.count = 0;
+        currentCount += 1;
+        if (currentCount > frame.count){
+            currentCount = 0;
             frameIndex = (frameIndex + 1) % (frames.length );
         }
         //apply current frame
