@@ -57,7 +57,6 @@ var drawStatic = (function(){
 
         currentValues.count += 1;
         if (currentValues.count > frame.count){
-            console.log('changing frame to', frameIndex);
             currentValues.count = 0;
             frameIndex = (frameIndex + 1) % (frames.length );
         }
