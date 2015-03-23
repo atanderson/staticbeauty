@@ -62,16 +62,16 @@ var drawStatic = (function(){
             frameIndex = (frameIndex + 1) % (frames.length );
         }
         //apply current frame
-        Object.keys(currentValues).forEach(function(key){
+        Object.keys(currentValues).forEach( function(key) {
             currentValues[key] += frame[key] || 0;
-        })
+        });
 
         for (var row = 0; row <= height; row++) {
             var xEnd   = xEndByRow[row],
                 xStart = -xEnd + 0;
-            if (xEnd != 0 && xStart != 0){
+            if (xEnd != 0 && xStart != 0) {
                 var imgData = ctx.createImageData((Math.abs(xStart) + Math.abs(xEnd)), 1 );
-                for(var i = 0; i <= imgData.data.length ; i+= 4){
+                for (var i = 0; i <= imgData.data.length ; i+= 4) {
                     imgData.data[i+0] = currentValues.red;
                     imgData.data[i+1] = currentValues.green;
                     imgData.data[i+2] = currentValues.blue;
