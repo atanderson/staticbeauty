@@ -28,13 +28,14 @@ var drawStatic = (function(){
         endBackgroundMax   = 110,
         backgroundColorMax = initBackgroundMax,
         backroundDirection = 0.5;
+
+    return function (mousePosition) {
+
         backgroundColorMax += backroundDirection;
         if(backgroundColorMax > endBackgroundMax || backgroundColorMax < initBackgroundMax){
             backroundDirection *= -1;
         }
 
-    return function (mousePosition) {
-      
         for (var row = 0; row <= height; row++) {
             var xEnd   = xEndByRow[row],
                 xStart = -xEnd + 0;
@@ -47,7 +48,8 @@ var drawStatic = (function(){
             }
 
         }
-        
+
+
     };
 }());
 
