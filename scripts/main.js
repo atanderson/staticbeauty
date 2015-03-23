@@ -37,8 +37,9 @@ var drawStatic = (function(){
             { red: -1},
             { green: 1},
             { blue: -1},
+            { red: 1},
             { green: -1},
-            { red: 255, count:1}
+            // { red: 255, count:1}
         ].map(function(obj){
             return Object.assign({}, defaultFrame, obj);
         }),
