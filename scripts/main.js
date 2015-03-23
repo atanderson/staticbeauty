@@ -24,17 +24,47 @@ var drawStatic = (function(){
         xEndByRow[row] = Math.round(Math.sqrt(Math.pow(radius,2) - Math.pow(row-centerY, 2)) + 0);
     }
 
-    var initBackgroundMax  = 95,
-        endBackgroundMax   = 110,
-        backgroundColorMax = initBackgroundMax,
-        backroundDirection = 0.5;
+    //animation stuff
+    var defaultFrame = {
+            red: 0,
+            blue: 0,
+            green: 0,
+            alpha: 0,
+            count: 255
+        },
+        frames = [
+            { blue: 1},
+            { red: -1},
+            { green: 1},
+            { blue: -1},
+            { green: -1},
+            { red: 255, count:1}
+        ].map(function(obj){
+            return Object.assign({}, defaultFrame, obj);
+        }),
+        currentValues = {
+            red: 255,
+            blue: 0,
+            green: 0,
+            alpha: 255,
+            count: 0
+        },
+        frameIndex = 0;
 
     return function (mousePosition) {
 
-        backgroundColorMax += backroundDirection;
-        if(backgroundColorMax > endBackgroundMax || backgroundColorMax < initBackgroundMax){
-            backroundDirection *= -1;
+        var frame = frames[frameIndex];
+
+        currentValues.count += 1;
+        if (currentValues.count > frame.count){
+            console.log('changing frame to', frameIndex);
+            currentValues.count = 0;
+            frameIndex = (frameIndex + 1) % (frames.length );
         }
+        //apply current frame
+        Object.keys(currentValues).forEach(function(key){
+            currentValues[key] += frame[key] || 0;
+        })
 
         for (var row = 0; row <= height; row++) {
             var xEnd   = xEndByRow[row],
@@ -42,7 +72,10 @@ var drawStatic = (function(){
             if (xEnd != 0 && xStart != 0){
                 var imgData = ctx.createImageData((Math.abs(xStart) + Math.abs(xEnd)), 1 );
                 for(var i = 0; i <= imgData.data.length ; i+= 4){
-                    crinkleDatPixelAt(imgData.data, backgroundColorMax, i)
+                    imgData.data[i+0] = currentValues.red;
+                    imgData.data[i+1] = currentValues.green;
+                    imgData.data[i+2] = currentValues.blue;
+                    imgData.data[i+3] = currentValues.alpha;
                 }
                 ctx.putImageData(imgData, mousePosition.x - (imgData.data.length / 8), mousePosition.y + row - radius);
             }
