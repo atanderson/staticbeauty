@@ -94,22 +94,23 @@ var drawInitialStatic = function(){
 
 //ANDREW: This is experimental
 var drawRainbow = function(){
+
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
-    var rowWidth = canvas.width;
-    var previousRed;
-    var previousGreen;
-    var previousBlue;
 
-    var red = 255,
+    var rowWidth = canvas.width,
+        previousRed,
+        previousGreen,
+        previousBlue,
+        red = 255,
         green = 0,
-        blue = 0;
+        blue = 0,
+        imgData = ctx.createImageData(rowWidth, 1);
 
-    var imgData = ctx.createImageData(rowWidth, 1);
     for (var i = 0; i < imgData.data.length ; i += 4){
 
         if (i != 0){
-            previousRed = imgData.data[i - 4 + 0];
+            previousRed = imgData.data[i - 4];
             previousGreen = imgData.data[i - 4 + 1];
             previousBlue = imgData.data[i - 4 + 2];
         } else {
@@ -132,9 +133,9 @@ var drawRainbow = function(){
             green = previousGreen - 1 
         }
 
-        imgData.data[i+0] = red;//dunno;
-        imgData.data[i+1] = green;//dunno;
-        imgData.data[i+2] = blue;//dunno;
+        imgData.data[i+0] = red;
+        imgData.data[i+1] = green;
+        imgData.data[i+2] = blue;
         imgData.data[i+3] = 255;
     }
 
