@@ -97,24 +97,18 @@ var drawRainbow = function(){
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
     var rowWidth = canvas.width;
-
-    var redInit =  255;
-    var greenInit = 0;
-    var blueInit = 0;
-
     var previousRed;
     var previousGreen;
     var previousBlue;
 
-    var red = 255,
-    green = 0,
-    blue = 0,
-    alpha = 255;
-
     for (var pxFromTop = 0; pxFromTop <= canvas.height; pxFromTop += 1){
 
-        var imgData = ctx.createImageData(rowWidth, 1);
+        var red = 255,
+        green = 0,
+        blue = 0,
+        alpha = 255;
 
+        var imgData = ctx.createImageData(rowWidth, 1);
         for (var i = 0; i < imgData.data.length ; i += 4){
 
             if (i != 0){
@@ -122,9 +116,9 @@ var drawRainbow = function(){
                 previousGreen = imgData.data[i - 4 + 1];
                 previousBlue = imgData.data[i - 4 + 2];
             } else {
-                previousRed = redInit;
-                previousGreen = greenInit;
-                previousBlue = blueInit;
+                previousRed = red;
+                previousGreen = green;
+                previousBlue = blue;
             }
 
             if (previousRed == 255 && previousBlue < 255 && previousGreen == 0){
@@ -137,15 +131,10 @@ var drawRainbow = function(){
                 blue = previousBlue - 1;
             } else if (previousRed < 255 && previousBlue == 0 && previousGreen == 255){
                 red = previousRed + 1;
-            } else {
-                previousRed = redInit;
-                previousGreen = greenInit;
-                previousBlue = blueInit;
-                red = previousRed;
-                green = previousGreen;
-                blue = previousBlue;
+            } else if (previousRed == 255 && previousBlue == 0 && previousGreen > 0){
+                green = previousGreen - 1 
             }
-            
+
             imgData.data[i+0] = red;//dunno;
             imgData.data[i+1] = green;//dunno;
             imgData.data[i+2] = blue;//dunno;
