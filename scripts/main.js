@@ -96,7 +96,7 @@ var drawInitialStatic = function(){
 var drawRainbow = function(){
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
-    var imgData = ctx.createImageData(canvas.width, canvas.height);
+    var rowWidth = canvas.width;
 
     var redInit =  255;
     var greenInit = 0;
@@ -111,43 +111,51 @@ var drawRainbow = function(){
     blue = 0,
     alpha = 255;
 
-    for (var i = 0; i < imgData.data.length ; i += 4){
+    for (var pxFromTop = 0; pxFromTop <= canvas.height; pxFromTop += 1){
 
-        if (i != 0){
-            previousRed = imgData.data[i - 4 + 0];
-            previousGreen = imgData.data[i - 4 + 1];
-            previousBlue = imgData.data[i - 4 + 2];
-        } else {
-            previousRed = redInit;
-            previousGreen = greenInit;
-            previousBlue = blueInit;
+        var imgData = ctx.createImageData(rowWidth, 1);
+
+        for (var i = 0; i < imgData.data.length ; i += 4){
+
+            if (i != 0){
+                previousRed = imgData.data[i - 4 + 0];
+                previousGreen = imgData.data[i - 4 + 1];
+                previousBlue = imgData.data[i - 4 + 2];
+            } else {
+                previousRed = redInit;
+                previousGreen = greenInit;
+                previousBlue = blueInit;
+            }
+
+            if (previousRed == 255 && previousBlue < 255 && previousGreen == 0){
+                blue = previousBlue + 1;
+            } else if (previousRed > 0 && previousBlue == 255 && previousGreen == 0){
+                red = previousRed - 1;
+            } else if (previousRed == 0 && previousBlue == 255 && previousGreen < 255){
+                green = previousGreen + 1;
+            } else if (previousRed == 0 && previousBlue > 0 && previousGreen == 255){
+                blue = previousBlue - 1;
+            } else if (previousRed < 255 && previousBlue == 0 && previousGreen == 255){
+                red = previousRed + 1;
+            } else {
+                previousRed = redInit;
+                previousGreen = greenInit;
+                previousBlue = blueInit;
+                red = previousRed;
+                green = previousGreen;
+                blue = previousBlue;
+            }
+            
+            imgData.data[i+0] = red;//dunno;
+            imgData.data[i+1] = green;//dunno;
+            imgData.data[i+2] = blue;//dunno;
+            imgData.data[i+3] = 255;
         }
 
-        if (previousRed == 255 && previousBlue < 255 && previousGreen == 0){
-           blue = previousBlue + 1;
-         } else if (previousRed > 0 && previousBlue == 255 && previousGreen == 0){
-            red = previousRed - 1;
-        } else if (previousRed == 0 && previousBlue == 255 && previousGreen < 255){
-            green = previousGreen + 1;
-        } else if (previousRed == 0 && previousBlue > 0 && previousGreen == 255){
-            blue = previousBlue - 1;
-        } else if (previousRed < 255 && previousBlue == 0 && previousGreen == 255){
-            red = previousRed + 1;
-        } else {
-            previousRed = redInit;
-            previousGreen = greenInit;
-            previousBlue = blueInit;
-            red = previousRed;
-            green = previousGreen;
-            blue = previousBlue;
-        }
-        imgData.data[i+0] = red;//dunno;
-        imgData.data[i+1] = green;//dunno;
-        imgData.data[i+2] = blue;//dunno;
-        imgData.data[i+3] = alpha;
+        ctx.putImageData(imgData, 0, pxFromTop);
+
     }
 
-    ctx.putImageData(imgData, 0, 0);
 }
 
 //Return the mouse position in the window
