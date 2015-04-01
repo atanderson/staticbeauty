@@ -101,48 +101,45 @@ var drawRainbow = function(){
     var previousGreen;
     var previousBlue;
 
-    for (var pxFromTop = 0; pxFromTop <= canvas.height; pxFromTop += 1){
-
-        var red = 255,
+    var red = 255,
         green = 0,
-        blue = 0,
-        alpha = 255;
+        blue = 0;
 
-        var imgData = ctx.createImageData(rowWidth, 1);
-        for (var i = 0; i < imgData.data.length ; i += 4){
+    var imgData = ctx.createImageData(rowWidth, 1);
+    for (var i = 0; i < imgData.data.length ; i += 4){
 
-            if (i != 0){
-                previousRed = imgData.data[i - 4 + 0];
-                previousGreen = imgData.data[i - 4 + 1];
-                previousBlue = imgData.data[i - 4 + 2];
-            } else {
-                previousRed = red;
-                previousGreen = green;
-                previousBlue = blue;
-            }
-
-            if (previousRed == 255 && previousBlue < 255 && previousGreen == 0){
-                blue = previousBlue + 1;
-            } else if (previousRed > 0 && previousBlue == 255 && previousGreen == 0){
-                red = previousRed - 1;
-            } else if (previousRed == 0 && previousBlue == 255 && previousGreen < 255){
-                green = previousGreen + 1;
-            } else if (previousRed == 0 && previousBlue > 0 && previousGreen == 255){
-                blue = previousBlue - 1;
-            } else if (previousRed < 255 && previousBlue == 0 && previousGreen == 255){
-                red = previousRed + 1;
-            } else if (previousRed == 255 && previousBlue == 0 && previousGreen > 0){
-                green = previousGreen - 1 
-            }
-
-            imgData.data[i+0] = red;//dunno;
-            imgData.data[i+1] = green;//dunno;
-            imgData.data[i+2] = blue;//dunno;
-            imgData.data[i+3] = 255;
+        if (i != 0){
+            previousRed = imgData.data[i - 4 + 0];
+            previousGreen = imgData.data[i - 4 + 1];
+            previousBlue = imgData.data[i - 4 + 2];
+        } else {
+            previousRed = red;
+            previousGreen = green;
+            previousBlue = blue;
         }
 
-        ctx.putImageData(imgData, 0, pxFromTop);
+        if (previousRed == 255 && previousBlue < 255 && previousGreen == 0){
+            blue = previousBlue + 1;
+        } else if (previousRed > 0 && previousBlue == 255 && previousGreen == 0){
+            red = previousRed - 1;
+        } else if (previousRed == 0 && previousBlue == 255 && previousGreen < 255){
+            green = previousGreen + 1;
+        } else if (previousRed == 0 && previousBlue > 0 && previousGreen == 255){
+            blue = previousBlue - 1;
+        } else if (previousRed < 255 && previousBlue == 0 && previousGreen == 255){
+            red = previousRed + 1;
+        } else if (previousRed == 255 && previousBlue == 0 && previousGreen > 0){
+            green = previousGreen - 1 
+        }
 
+        imgData.data[i+0] = red;//dunno;
+        imgData.data[i+1] = green;//dunno;
+        imgData.data[i+2] = blue;//dunno;
+        imgData.data[i+3] = 255;
+    }
+
+    for (var pxFromTop = 0; pxFromTop <= canvas.height; pxFromTop += 1){
+        ctx.putImageData(imgData, 0, pxFromTop);
     }
 
 }
@@ -170,7 +167,6 @@ var showSecret = function (e){
     var width = window.innerWidth;
     var height = window.innerHeight;
     if (pos.x < (width / 2) + 100 && pos.x > (width / 2) - 100 && pos.y < (height /2) + 100 && pos.y > (height/2) - 100){
-        console.log('secret trigger + 1');
         secretTrigger ++;
     }
     if (secretTrigger > 50){
