@@ -78,7 +78,7 @@ var drawStatic = (function(){
 var drawRainbowStatic = (function(){
 
     var heightIncrementor = 0,
-        heightScrollDirection = 8;
+        heightScrollDirection = 1;
 
     var widthIncrementor = 0,
         widthScrollDirection = -1;
@@ -111,8 +111,6 @@ var drawRainbowStatic = (function(){
         frameIndex = 0;
 
     return function (mousePosition) {
-
-        var firstRow = ctx.getImageData(0, heightIncrementor, canvas.width, 2);
         // var firstColumn = ctx.getImageData(widthIncrementor, 0, 1 , canvas.height);
         // console.log(firstColumn);
         // console.log(widthIncrementor);
@@ -172,8 +170,8 @@ var drawRainbowStatic = (function(){
             }
 
         }
-        heightIncrementor += heightScrollDirection;
-        ctx.putImageData(firstRow, 0, (heightIncrementor % canvas.height));
+        // heightIncrementor += heightScrollDirection;
+
         // if(heightIncrementor == 0 || heightIncrementor == canvas.height){
         //     heightScrollDirection *= -1;
         // }
@@ -308,7 +306,8 @@ var secretTrigger = 0;
 window.addEventListener('mousemove', showSecret, false);
 window.addEventListener('resize', drawInitialStatic, false);
 
-setInterval(function(){
-    if(lastPos)
-        requestAnimationFrame(drawRainbowStatic.bind(this,lastPos))
-}, 10);
+setInterval(requestAnimationFrame.bind(this,function(){
+            drawRainbowStatic(lastPos);
+            var firstRow = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                ctx.putImageData(firstRow, 0, 2);
+}), 10);
