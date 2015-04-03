@@ -16,28 +16,28 @@ var crinkleDatPixelAt = function(data, max, i){
 //Generates a circle of randomized pixels and writes it at the cursor position
 var drawStatic = (function(){
 
-    //Define the circle. Units are pixels unless noted otherwise
-    //?ANDREW: do we need all these, some are redundant
-    var width     = 200,       
-        height    = width,     
-        radius    = width/2,   
-        centerX   = width/2,
-        centerY   = height/2;
-
-    //Starting from the top of the circle, determine now long the row of pixels
-    //should be using the circle equation 
-    var xEndByRow = [];
-    for (var row = 0; row <= height; row++) {
-        xEndByRow[row] = Math.round(Math.sqrt(Math.pow(radius, 2) - Math.pow(row-centerY, 2)) + 0);
-    }
-
-    //Brightness bounds used for oscillating static 'color' effect
-    var initBackgroundMax  = 95,
-        endBackgroundMax   = 110,
-        backgroundColorMax = initBackgroundMax,
-        backroundDirection = 0.5;
-
     return function (mousePosition) {
+
+        //Define the circle. Units are pixels unless noted otherwise
+        //?ANDREW: do we need all these, some are redundant
+        var width     = Math.random() * 80,       
+            height    = width,     
+            radius    = width/2,   
+            centerX   = width/2,
+            centerY   = height/2;
+
+        //Starting from the top of the circle, determine now long the row of pixels
+        //should be using the circle equation 
+        var xEndByRow = [];
+        for (var row = 0; row <= height; row++) {
+            xEndByRow[row] = Math.round(Math.sqrt(Math.pow(radius, 2) - Math.pow(row-centerY, 2)) + 0);
+        }
+
+        //Brightness bounds used for oscillating static 'color' effect
+        var initBackgroundMax  = 95,
+            endBackgroundMax   = 110,
+            backgroundColorMax = initBackgroundMax,
+            backroundDirection = 0.5;
 
         //Increment the pixel color bounds
         backgroundColorMax += backroundDirection;
@@ -58,7 +58,7 @@ var drawStatic = (function(){
             if (xEnd != 0 && xStart != 0){
 
                 //Create an imgData array that is 1 pixel tall
-                var imgData = ctx.createImageData(Math.abs(xStart) + xEnd, 1 );
+                var imgData = ctx.createImageData(2*(Math.abs(xStart) + xEnd), 1 );
                 //randomize every pixel within the imgData row
                 for(var i = 0; i <= imgData.data.length ; i+= 4){
                     crinkleDatPixelAt(imgData.data, backgroundColorMax, i)
@@ -66,7 +66,7 @@ var drawStatic = (function(){
 
                 //Draw the circle relative to the cursor. NOTE: we divide by 8
                 //to turn the clamped array into 'pixels' then find the center
-                ctx.putImageData(imgData, mousePosition.x - (imgData.data.length / 8), mousePosition.y + row - radius);
+                ctx.putImageData(imgData, mousePosition.x - (imgData.data.length / 8), mousePosition.y + row*2 - radius);
             }
 
         }
@@ -76,19 +76,6 @@ var drawStatic = (function(){
 
 //Quick N Dirty merge from 'mn/all-the-colors'
 var drawRainbowStatic = (function(){
-    var width     = 200,
-        trailSize = width*2/3,
-        height    = width,
-        radius    = width/2,
-        centerX   = width/2,
-        centerY   = height/2,
-        colorMax  = 145,
-        xEndByRow = [];
-
-    //precalculate the xEnd for every row
-    for (var row = 0; row <= height; row++) {
-        xEndByRow[row] = Math.round(Math.sqrt(Math.pow(radius,2) - Math.pow(row-centerY, 2)) + 0);
-    }
 
     //animation stuff
     var defaultFrame = {
@@ -119,6 +106,21 @@ var drawRainbowStatic = (function(){
 
     return function (mousePosition) {
 
+        //Define the circle. Units are pixels unless noted otherwise
+        //?ANDREW: do we need all these, some are redundant
+        var width     = Math.random() * 80,
+            height    = width,
+            radius    = width/2,
+            centerX   = width/2,
+            centerY   = height/2;
+
+        //Starting from the top of the circle, draw the row of pixels and place
+        //them so the circle is centered on the cursor.
+        var xEndByRow = [];
+        for (var row = 0; row <= height; row++) {
+            xEndByRow[row] = Math.round(Math.sqrt(Math.pow(radius,2) - Math.pow(row-centerY, 2)) + 0);
+        }
+
         var frame = frames[frameIndex];
 
         currentCount += 1;
@@ -131,22 +133,34 @@ var drawRainbowStatic = (function(){
             currentValues[key] += frame[key] || 0;
         });
 
+        //Starting from the top of the circle, draw the row of pixels and place
+        //them so the circle is centered on the cursor.
         for (var row = 0; row <= height; row++) {
+
+            //Get the pre-set length of the row of pixels
             var xEnd   = xEndByRow[row],
-                xStart = -xEnd + 0;
-            if (xEnd != 0 && xStart != 0) {
-                var imgData = ctx.createImageData((Math.abs(xStart) + Math.abs(xEnd)), 1 );
-                for (var i = 0; i <= imgData.data.length ; i+= 4) {
+                xStart = -xEnd;
+
+            //?ANDREW can't remember why/if this if statement is necessary
+            if (xEnd != 0 && xStart != 0){
+
+                //Create an imgData array that is 1 pixel tall
+                var imgData = ctx.createImageData(2*(Math.abs(xStart) + xEnd), 1 );
+                //randomize every pixel within the imgData row
+                for(var i = 0; i <= imgData.data.length ; i+= 4){
                     imgData.data[i+0] = currentValues.red * Math.random();
                     imgData.data[i+1] = currentValues.green * Math.random();
                     imgData.data[i+2] = currentValues.blue * Math.random();
                     imgData.data[i+3] = currentValues.alpha;
                 }
-                ctx.putImageData(imgData, mousePosition.x - (imgData.data.length / 8), mousePosition.y + row - radius);
+
+                //Draw the circle relative to the cursor. NOTE: we divide by 8
+                //to turn the clamped array into 'pixels' then find the center
+                //ctx.putImageData(imgData, mousePosition.x - (imgData.data.length / 8), mousePosition.y + row - radius);
+                ctx.putImageData(imgData, mousePosition.x - (imgData.data.length / 8), mousePosition.y + 2*row - radius);
             }
 
         }
-
 
     };
 }());
@@ -247,8 +261,15 @@ var showSecret = function (e){
     if (pos.x < (width / 2) + 100 && pos.x > (width / 2) - 100 && pos.y < (height /2) + 100 && pos.y > (height/2) - 100){
         secretTrigger ++;
     }
-    if (secretTrigger > 50){
-        window.requestAnimationFrame(drawRainbow);
+
+    if (secretTrigger < 50){
+        window.requestAnimationFrame(function () {
+            drawStatic(pos);
+        });
+    } else {
+        window.requestAnimationFrame(function () {
+            drawRainbowStatic(pos);
+        });
     }
 };
 
@@ -258,6 +279,6 @@ drawInitialStatic();
 //ANDREW: This is experimental for the secret reveal effect
 var secretTrigger = 0;
 
-window.addEventListener('mousemove', refresh, false);
+//window.addEventListener('mousemove', refresh, false);
 window.addEventListener('mousemove', showSecret, false);
 window.addEventListener('resize', drawInitialStatic, false);
