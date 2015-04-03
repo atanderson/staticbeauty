@@ -20,14 +20,14 @@ var drawStatic = (function(){
 
         //Define the circle. Units are pixels unless noted otherwise
         //?ANDREW: do we need all these, some are redundant
-        var width     = Math.random() * 80,       
-            height    = width,     
-            radius    = width/2,   
+        var width     = Math.random() * 80,
+            height    = width,
+            radius    = width/2,
             centerX   = width/2,
             centerY   = height/2;
 
         //Starting from the top of the circle, determine now long the row of pixels
-        //should be using the circle equation 
+        //should be using the circle equation
         var xEndByRow = [];
         for (var row = 0; row <= height; row++) {
             xEndByRow[row] = Math.round(Math.sqrt(Math.pow(radius, 2) - Math.pow(row-centerY, 2)) + 0);
@@ -45,7 +45,7 @@ var drawStatic = (function(){
         if(backgroundColorMax > endBackgroundMax || backgroundColorMax < initBackgroundMax){
             backroundDirection *= -1;
         }
-        
+
         //Starting from the top of the circle, draw the row of pixels and place
         //them so the circle is centered on the cursor.
         for (var row = 0; row <= height; row++) {
@@ -78,7 +78,7 @@ var drawStatic = (function(){
 var drawRainbowStatic = (function(){
 
     var heightIncrementor = 0,
-        heightScrollDirection = -1;
+        heightScrollDirection = 8;
 
     var widthIncrementor = 0,
         widthScrollDirection = -1;
@@ -112,10 +112,10 @@ var drawRainbowStatic = (function(){
 
     return function (mousePosition) {
 
-        var firstRow = ctx.getImageData(0, heightIncrementor, canvas.width, 1);
-        var firstColumn = ctx.getImageData(widthIncrementor, 0, 1 , canvas.height);
-        console.log(firstColumn);
-        console.log(widthIncrementor);
+        var firstRow = ctx.getImageData(0, heightIncrementor, canvas.width, 2);
+        // var firstColumn = ctx.getImageData(widthIncrementor, 0, 1 , canvas.height);
+        // console.log(firstColumn);
+        // console.log(widthIncrementor);
 
         //Define the circle. Units are pixels unless noted otherwise
         //?ANDREW: do we need all these, some are redundant
@@ -172,18 +172,18 @@ var drawRainbowStatic = (function(){
             }
 
         }
-
-        ctx.putImageData(firstRow, 0, canvas.height - heightIncrementor);
-        if(heightIncrementor == 0 || heightIncrementor == canvas.height){
-            heightScrollDirection *= -1;
-        }
         heightIncrementor += heightScrollDirection;
+        ctx.putImageData(firstRow, 0, (heightIncrementor % canvas.height));
+        // if(heightIncrementor == 0 || heightIncrementor == canvas.height){
+        //     heightScrollDirection *= -1;
+        // }
 
-        ctx.putImageData(firstColumn, canvas.width - widthIncrementor, 0 );
-        if(widthIncrementor == 0 || widthIncrementor == canvas.width){
-            widthScrollDirection *= -1;
-        }
-        widthIncrementor += widthScrollDirection;
+
+        // ctx.putImageData(firstColumn, canvas.width - widthIncrementor, 0 );
+        // if(widthIncrementor == 0 || widthIncrementor == canvas.width){
+        //     widthScrollDirection *= -1;
+        // }
+        // widthIncrementor += widthScrollDirection;
 
     };
 
@@ -245,7 +245,7 @@ var drawRainbow = function(){
         } else if (previousRed < 255 && previousBlue == 0 && previousGreen == 255){
             red = previousRed + 1;
         } else if (previousRed == 255 && previousBlue == 0 && previousGreen > 0){
-            green = previousGreen - 1 
+            green = previousGreen - 1
         }
 
         imgData.data[i+0] = red;
@@ -276,7 +276,7 @@ var refresh = function (e) {
         drawStatic(pos);
     });
 }
-
+var lastPos = null;
 //ANDREW: This is experimental for the secret reveal effect
 var showSecret = function (e){
     var pos = getMousePosition(canvas, e);
@@ -286,15 +286,16 @@ var showSecret = function (e){
         secretTrigger ++;
     }
 
-    if (secretTrigger < 50){
-        window.requestAnimationFrame(function () {
-            drawStatic(pos);
-        });
-    } else {
-        window.requestAnimationFrame(function () {
-            drawRainbowStatic(pos);
-        });
-    }
+    // if (secretTrigger < 50){
+    //     window.requestAnimationFrame(function () {
+    //         drawStatic(pos);
+    //     });
+    // } else {
+    //     window.requestAnimationFrame(function () {
+    //         drawRainbowStatic(pos);
+    //     });
+    // }
+    lastPos = pos;
 };
 
 //Draw the initial static texture for the page
@@ -306,3 +307,8 @@ var secretTrigger = 0;
 //window.addEventListener('mousemove', refresh, false);
 window.addEventListener('mousemove', showSecret, false);
 window.addEventListener('resize', drawInitialStatic, false);
+
+setInterval(function(){
+    if(lastPos)
+        requestAnimationFrame(drawRainbowStatic.bind(this,lastPos))
+}, 10);
