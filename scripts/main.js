@@ -74,6 +74,83 @@ var drawStatic = (function(){
     };
 }());
 
+//Quick N Dirty merge from 'mn/all-the-colors'
+var drawRainbowStatic = (function(){
+    var width     = 200,
+        trailSize = width*2/3,
+        height    = width,
+        radius    = width/2,
+        centerX   = width/2,
+        centerY   = height/2,
+        colorMax  = 145,
+        xEndByRow = [];
+
+    //precalculate the xEnd for every row
+    for (var row = 0; row <= height; row++) {
+        xEndByRow[row] = Math.round(Math.sqrt(Math.pow(radius,2) - Math.pow(row-centerY, 2)) + 0);
+    }
+
+    //animation stuff
+    var defaultFrame = {
+            red: 0,
+            blue: 0,
+            green: 0,
+            alpha: 0,
+            count: 255
+        },
+        frames = [
+            { blue:  +1 },
+            { red:   -1 },
+            { green: +1 },
+            { blue:  -1 },
+            { red:   +1 },
+            { green: -1 }
+        ].map(function(obj){
+            return Object.assign({}, defaultFrame, obj);
+        }),
+        currentCount = 0,
+        currentValues = {
+            red: 255,
+            blue: 0,
+            green: 0,
+            alpha: 255
+        },
+        frameIndex = 0;
+
+    return function (mousePosition) {
+
+        var frame = frames[frameIndex];
+
+        currentCount += 1;
+        if (currentCount > frame.count){
+            currentCount = 0;
+            frameIndex = (frameIndex + 1) % frames.length;
+        }
+        //apply current frame
+        Object.keys(currentValues).forEach( function(key) {
+            currentValues[key] += frame[key] || 0;
+        });
+
+        for (var row = 0; row <= height; row++) {
+            var xEnd   = xEndByRow[row],
+                xStart = -xEnd + 0;
+            if (xEnd != 0 && xStart != 0) {
+                var imgData = ctx.createImageData((Math.abs(xStart) + Math.abs(xEnd)), 1 );
+                for (var i = 0; i <= imgData.data.length ; i+= 4) {
+                    imgData.data[i+0] = currentValues.red * Math.random();
+                    imgData.data[i+1] = currentValues.green * Math.random();
+                    imgData.data[i+2] = currentValues.blue * Math.random();
+                    imgData.data[i+3] = currentValues.alpha;
+                }
+                ctx.putImageData(imgData, mousePosition.x - (imgData.data.length / 8), mousePosition.y + row - radius);
+            }
+
+        }
+
+
+    };
+}());
+
 //Draw a randomized canvas of pixels that is the size of the browser window
 var drawInitialStatic = function(){
 
