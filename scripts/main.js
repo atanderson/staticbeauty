@@ -77,6 +77,12 @@ var drawStatic = (function(){
 //Quick N Dirty merge from 'mn/all-the-colors'
 var drawRainbowStatic = (function(){
 
+    var heightIncrementor = 0,
+        heightScrollDirection = -1;
+
+    var widthIncrementor = 0,
+        widthScrollDirection = -1;
+
     //animation stuff
     var defaultFrame = {
             red: 0,
@@ -105,6 +111,11 @@ var drawRainbowStatic = (function(){
         frameIndex = 0;
 
     return function (mousePosition) {
+
+        var firstRow = ctx.getImageData(0, heightIncrementor, canvas.width, 1);
+        var firstColumn = ctx.getImageData(widthIncrementor, 0, 1 , canvas.height);
+        console.log(firstColumn);
+        console.log(widthIncrementor);
 
         //Define the circle. Units are pixels unless noted otherwise
         //?ANDREW: do we need all these, some are redundant
@@ -162,7 +173,20 @@ var drawRainbowStatic = (function(){
 
         }
 
+        ctx.putImageData(firstRow, 0, canvas.height - heightIncrementor);
+        if(heightIncrementor == 0 || heightIncrementor == canvas.height){
+            heightScrollDirection *= -1;
+        }
+        heightIncrementor += heightScrollDirection;
+
+        ctx.putImageData(firstColumn, canvas.width - widthIncrementor, 0 );
+        if(widthIncrementor == 0 || widthIncrementor == canvas.width){
+            widthScrollDirection *= -1;
+        }
+        widthIncrementor += widthScrollDirection;
+
     };
+
 }());
 
 //Draw a randomized canvas of pixels that is the size of the browser window
