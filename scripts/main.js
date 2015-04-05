@@ -77,12 +77,6 @@ var drawStatic = (function(){
 //Quick N Dirty merge from 'mn/all-the-colors'
 var drawRainbowStatic = (function(){
 
-    var heightIncrementor = 0,
-        heightScrollDirection = -1;
-
-    var widthIncrementor = 0,
-        widthScrollDirection = -1;
-
     //animation stuff
     var defaultFrame = {
             red: 0,
@@ -112,10 +106,6 @@ var drawRainbowStatic = (function(){
 
     return function (mousePosition) {
 
-        var firstRow = ctx.getImageData(0, heightIncrementor, canvas.width, 1);
-        var firstColumn = ctx.getImageData(widthIncrementor, 0, 1 , canvas.height);
-        console.log(firstColumn);
-        console.log(widthIncrementor);
 
         //Define the circle. Units are pixels unless noted otherwise
         //?ANDREW: do we need all these, some are redundant
@@ -173,17 +163,6 @@ var drawRainbowStatic = (function(){
 
         }
 
-        ctx.putImageData(firstRow, 0, canvas.height - heightIncrementor);
-        if(heightIncrementor == 0 || heightIncrementor == canvas.height){
-            heightScrollDirection *= -1;
-        }
-        heightIncrementor += heightScrollDirection;
-
-        ctx.putImageData(firstColumn, canvas.width - widthIncrementor, 0 );
-        if(widthIncrementor == 0 || widthIncrementor == canvas.width){
-            widthScrollDirection *= -1;
-        }
-        widthIncrementor += widthScrollDirection;
 
     };
 
@@ -297,6 +276,36 @@ var showSecret = function (e){
     }
 };
 
+//Scrolling markers and imgdata replacement
+var scrollDown = (function(){
+
+    var heightIncrementor = 0,
+        heightScrollDirection = -1;
+
+    var widthIncrementor = 0,
+        widthScrollDirection = -1;
+
+    return function(){
+
+        var firstRow = ctx.getImageData(0, heightIncrementor, canvas.width, 1);
+        var firstColumn = ctx.getImageData(widthIncrementor, 0, 1 , canvas.height);
+
+        ctx.putImageData(firstRow, 0, canvas.height - heightIncrementor);
+        if(heightIncrementor == 0 || heightIncrementor == canvas.height){
+            heightScrollDirection *= -1;
+        }
+        heightIncrementor += heightScrollDirection;
+
+        ctx.putImageData(firstColumn, canvas.width - widthIncrementor, 0 );
+        if(widthIncrementor == 0 || widthIncrementor == canvas.width){
+            widthScrollDirection *= -1;
+        }
+        widthIncrementor += widthScrollDirection;
+
+    }
+
+})();
+
 //Draw the initial static texture for the page
 drawInitialStatic();
 
@@ -306,3 +315,9 @@ var secretTrigger = 0;
 //window.addEventListener('mousemove', refresh, false);
 window.addEventListener('mousemove', showSecret, false);
 window.addEventListener('resize', drawInitialStatic, false);
+
+
+
+setInterval(requestAnimationFrame.bind(this, function(){
+    scrollDown();
+}), 1);
