@@ -172,8 +172,8 @@ var drawRainbowStatic = (function(){
 var drawInitialStatic = function(){
 
     //Dimensions of the browser window
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    canvas.width = document.getElementById('screen').clientWidth;
+    canvas.height = document.getElementById('screen').clientWidth;
 
     //NOTE: Suspected to be taxing to generate
     var imgData = ctx.createImageData(canvas.width, canvas.height);
@@ -189,8 +189,8 @@ var drawInitialStatic = function(){
 //ANDREW: This is experimental
 var drawRainbow = function(){
 
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    canvas.width = document.getElementById('screen').width;
+    canvas.height = document.getElementById('screen').height;;
 
     var rowWidth = canvas.width,
         previousRed,
@@ -265,46 +265,118 @@ var showSecret = function (e){
         secretTrigger ++;
     }
 
-    if (secretTrigger < 50){
-        window.requestAnimationFrame(function () {
-            drawStatic(pos);
-        });
-    } else {
-        window.requestAnimationFrame(function () {
-            drawRainbowStatic(pos);
-        });
-    }
+    // if (secretTrigger < 50){
+    //     window.requestAnimationFrame(function () {
+    //         drawStatic(pos);
+    //     });
+    // } else {
+    //     setInterval(requestAnimationFrame.bind(this, function(){
+    //         whoaDude();
+    //     }), 10);
+    // }
 };
 
 //Scrolling markers and imgdata replacement
-var scrollDown = (function(){
+var whoaDude = (function(){
 
-    var heightIncrementor = 0,
-        heightScrollDirection = -1;
+    //animation stuff
+    var defaultFrame = {
+            red: 0,
+            blue: 0,
+            green: 0,
+            alpha: 0,
+            count: 255
+        },
+        frames = [
+            { blue:  +1 },
+            { red:   -1 },
+            { green: +1 },
+            { blue:  -1 },
+            { red:   +1 },
+            { green: -1 }
+        ].map(function(obj){
+            return Object.assign({}, defaultFrame, obj);
+        }),
+        currentCount = 0,
+        currentValues = {
+            red: 255,
+            blue: 0,
+            green: 0,
+            alpha: 255
+        },
+        frameIndex = 0;
 
-    var widthIncrementor = 0,
-        widthScrollDirection = -1;
+    var incrementingWidth = 0;
+    var widthIncrementor = 50;
 
-    return function(){
+    return function () {
 
-        var firstRow = ctx.getImageData(0, heightIncrementor, canvas.width, 1);
-        var firstColumn = ctx.getImageData(widthIncrementor, 0, 1 , canvas.height);
+        //Define the circle. Units are pixels unless noted otherwise
+        //?ANDREW: do we need all these, some are redundant
+        var width     = incrementingWidth,
+            height    = width,
+            radius    = width/2,
+            centerX   = width/2,
+            centerY   = height/2;
 
-        ctx.putImageData(firstRow, 0, canvas.height - heightIncrementor);
-        if(heightIncrementor == 0 || heightIncrementor == canvas.height){
-            heightScrollDirection *= -1;
+        //Starting from the top of the circle, draw the row of pixels and place
+        //them so the circle is centered on the cursor.
+        var xEndByRow = [];
+        for (var row = 0; row <= height; row++) {
+            xEndByRow[row] = Math.round(Math.sqrt(Math.pow(radius,2) - Math.pow(row-centerY, 2)) + 0);
         }
-        heightIncrementor += heightScrollDirection;
 
-        ctx.putImageData(firstColumn, canvas.width - widthIncrementor, 0 );
-        if(widthIncrementor == 0 || widthIncrementor == canvas.width){
-            widthScrollDirection *= -1;
+        var frame = frames[frameIndex];
+
+        currentCount += 1;
+        if (currentCount > frame.count){
+            currentCount = 0;
+            frameIndex = (frameIndex + 1) % frames.length;
         }
-        widthIncrementor += widthScrollDirection;
+        //apply current frame
+        Object.keys(currentValues).forEach( function(key) {
+            currentValues[key] += frame[key] || 0;
+        });
 
-    }
+        //Starting from the top of the circle, draw the row of pixels and place
+        //them so the circle is centered on the cursor.
+        for (var row = 0; row <= height; row++) {
 
-})();
+            //Get the pre-set length of the row of pixels
+            var xEnd   = xEndByRow[row],
+                xStart = -xEnd;
+
+            //?ANDREW can't remember why/if this if statement is necessary
+            if (xEnd != 0 && xStart != 0){
+
+                //Create an imgData array that is 1 pixel tall
+                var imgData = ctx.createImageData((Math.abs(xStart) + xEnd), 1 );
+                //randomize every pixel within the imgData row
+                for(var i = 0; i <= imgData.data.length ; i+= 4){
+                    imgData.data[i+0] = currentValues.red * Math.random();
+                    imgData.data[i+1] = currentValues.green * Math.random();
+                    imgData.data[i+2] = currentValues.blue * Math.random();
+                    imgData.data[i+3] = currentValues.alpha;
+                }
+
+                //Draw the circle relative to the cursor. NOTE: we divide by 8
+                //to turn the clamped array into 'pixels' then find the center
+                //ctx.putImageData(imgData, mousePosition.x - (imgData.data.length / 8), mousePosition.y + row - radius);
+                ctx.putImageData(imgData, canvas.width/2 - (imgData.data.length / 8), canvas.height/2 + row - radius);
+
+            }
+
+        }
+
+        incrementingWidth += widthIncrementor;
+
+        if (incrementingWidth > 700) {
+            incrementingWidth = 0;
+        }
+
+    };
+
+}());
 
 //Draw the initial static texture for the page
 drawInitialStatic();
@@ -316,8 +388,6 @@ var secretTrigger = 0;
 window.addEventListener('mousemove', showSecret, false);
 window.addEventListener('resize', drawInitialStatic, false);
 
-
-
 setInterval(requestAnimationFrame.bind(this, function(){
-    scrollDown();
+    drawInitialStatic();
 }), 1);
