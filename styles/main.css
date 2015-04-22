@@ -66,6 +66,15 @@ canvas {
     width: 100%;
 }
 
+.shadow {
+    height: 100%;
+    position: absolute;
+    width: 100%;
+    -webkit-box-shadow: inset 0px 0px 30px 0px rgba(0,0,0,0.75);
+    -moz-box-shadow: inset 0px 0px 30px 0px rgba(0,0,0,0.75);
+    box-shadow: inset 0px 0px 30px 0px rgba(0,0,0,0.75);
+}
+
 .controls {
     background: #916851;
     border-left: 3px solid #333;
@@ -121,6 +130,26 @@ canvas {
     width: 75%;
 }
 
+
+.indicator-wrapper {
+    height: 100%;
+    width: 100%;
+    transition: all 0.25s;
+    transform: rotate(0deg);
+}
+
+.indicator {
+    position: absolute;
+    background: #D32F2F;
+    box-shadow: inset 1px 2px 0px 0px rgba(0, 0, 0, 0.5);
+    height: 10px;
+    width: 10px;
+    top: 20%;
+    left: 20%;
+    border-radius: 50%;
+    transform: rotate(0deg);
+}
+
 .speaker {
     float:left;
     height: 30%;
@@ -174,12 +203,20 @@ canvas {
     border-radius: 50%;
     border-top-color: #222;
     border: 3px solid #111;
-    box-shadow:inset 1px 2px 0px 0px rgba(255, 255, 255, 0.15);
+    box-shadow: inset 1px 2px 0px 0px rgba(255, 255, 255, 0.15);
+    display: block;
     height: 90%;
     left: 5%;
     position: relative;
     top: 5%;
     width: 90%;
+    transition: all 0.1s;
+}
+
+.knob-inner:active{
+    box-shadow: inset 1px 2px 0px 0px rgba(10, 10, 10, 0.3);
+    background-color: #222;
+    transition: all 0.1s;
 }
 
 .foot {

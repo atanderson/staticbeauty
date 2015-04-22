@@ -391,3 +391,40 @@ window.addEventListener('resize', drawInitialStatic, false);
 setInterval(requestAnimationFrame.bind(this, function(){
     drawInitialStatic();
 }), 1);
+
+//UI/interaction bits and pieces
+$(document).ready(function(){
+
+    $('.indicator-wrapper').on('click', function(){
+
+        //behold my magic numbers
+        var rotationMatix = $(this).css('transform');
+
+        var matrixValues = rotationMatix.split('(')[1],
+        matrixValues = matrixValues.split(')')[0],
+        matrixValues = matrixValues.split(',');
+
+        var a = matrixValues[0];
+        var b = matrixValues[1];
+
+        var angle = Math.round(Math.atan2(b, a) * (180/Math.PI));
+
+        if (angle % 36 === 0){
+
+            if(angle < 0){
+                angle = 360 + angle;
+            }
+
+            $(this).css({
+                'transform': 'rotate(' + (angle + 36) + 'deg)',
+            });
+
+            $(this).find('.indicator').css({
+                'transform': 'rotate(' + -(angle + 36) + 'deg)',
+            });
+
+        }
+
+    });
+
+});
