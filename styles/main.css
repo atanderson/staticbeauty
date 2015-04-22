@@ -1,234 +1,233 @@
-*{
-  box-sizing: border-box;
+* {
+    box-sizing: border-box;
 }
 
 html,
 body {
-  height: 100%;
-  width: 100%;
+    height: 100%;
+    width: 100%;
 }
 
 canvas {
-  height: 100%;
-  width: 100%;
+    height: 100%;
+    width: 100%;
 }
 
 .enamel {
-  background: #222;
-  border-radius: 10px;
-  height: 400px;
-  margin: 10% auto 0;
-  width: 700px;
+    background: #222;
+    border-radius: 10px;
+    height: 400px;
+    margin: 10% auto 0;
+    width: 700px;
 }
 
 .wood {
-  background: #916851;
-  border: 2px solid #555;
-  border-bottom: 3px solid #666;
-  border-radius: 7px;
-  border-top: 5px solid black;
-  box-shadow: inset 2px 2px 0px 2px rgba(0, 0, 0, 0.25);
-  height: 95%;
-  left: 1%;
-  position: relative;
-  top: 2.5%;
-  width: 98%;
+    background: #916851;
+    border-bottom: 3px solid #666;
+    border-radius: 7px;
+    border-top: 5px solid black;
+    border: 2px solid #555;
+    box-shadow: inset 2px 2px 0px 2px rgba(0, 0, 0, 0.25);
+    height: 95%;
+    left: 1%;
+    position: relative;
+    top: 2.5%;
+    width: 98%;
 }
 
 .bezel {
-  background: #ccc;
-  border: 3px solid #111;
-  border-bottom-color: #333;
-  border-top-color: #000;
-  border-radius: 12px;
-  float:left;
-  height: 90%;
-  left: 2%;
-  position: relative;
-  top: 5%;
-  width: 75%;
+    background: #ccc;
+    border-bottom-color: #333;
+    border-radius: 12px;
+    border-top-color: #000;
+    border: 3px solid #111;
+    float:left;
+    height: 90%;
+    left: 2%;
+    position: relative;
+    top: 5%;
+    width: 75%;
 }
 
 .screen {
-  background: rgba(0,0,0,0);
-  border: 50px solid #AAA;
-  border-bottom: 40px solid #bbb;
-  border-radius: 10px;
-  border-top: 40px solid #999;
-  height: 100%;
-  position: relative;
-  width: 100%;
+    background: rgba(0,0,0,0);
+    border-bottom: 40px solid #bbb;
+    border-radius: 10px;
+    border-top: 40px solid #999;
+    border: 50px solid #AAA;
+    height: 100%;
+    position: relative;
+    width: 100%;
 }
 
 .controls {
-  background: #916851;
-  border-radius: 0 5px 5px 0;
-  border-left: 3px solid #333;
-  box-shadow: inset -2px 2px 0px 2px rgba(0, 0, 0, 0.25);
-  float: left;
-  height: 100%;
-  left: 5%;
-  position: relative;
-  width: 20%;
+    background: #916851;
+    border-left: 3px solid #333;
+    border-radius: 0 5px 5px 0;
+    box-shadow: inset -2px 2px 0px 2px rgba(0, 0, 0, 0.25);
+    float: left;
+    height: 100%;
+    left: 5%;
+    position: relative;
+    width: 20%;
 }
 
 .dial-panel {
-  background: #444;
-  border: 5px solid #6e6e6e;
-  border-bottom-color: #666;
-  border-radius: 3px;
-  border-right-color: #666;
-  border-top-color: #6e6e6e;
-  box-shadow: 0px 0px 0px 3px rgba(20, 20, 20, 0.5), inset 2px 2px 0px 2px rgba(0, 0, 0, 0.4);
-  float:left;
-  height: 60%;
-  position: relative;
-  width: 100%;
+    background: #444;
+    border-bottom-color: #666;
+    border-radius: 3px;
+    border-right-color: #666;
+    border-top-color: #6e6e6e;
+    border: 5px solid #6e6e6e;
+    box-shadow: 0px 0px 0px 3px rgba(20, 20, 20, 0.5), inset 2px 2px 0px 2px rgba(0, 0, 0, 0.4);
+    float:left;
+    height: 60%;
+    position: relative;
+    width: 100%;
 }
 
 .dial{
-  background: #333;
-  border: 5px solid #222;
-  border-bottom-color: #292929;
-  border-radius: 50%;
-  border-top-color: #191919;
-  box-shadow: 1px 1px 0px 1px rgba(255, 255, 255, 0.2);
-  height: 45%;
-  left: 10%;
-  margin-bottom: 7%;
-  position: relative;
-  top: 3%;
-  width: 80%;
+    background: #333;
+    border-bottom-color: #292929;
+    border-radius: 50%;
+    border-top-color: #191919;
+    border: 5px solid #222;
+    box-shadow: 1px 1px 0px 1px rgba(255, 255, 255, 0.2);
+    height: 45%;
+    left: 10%;
+    margin-bottom: 7%;
+    position: relative;
+    top: 3%;
+    width: 80%;
 }
 
 .dial-inner{
-  box-shadow: 0px 0px 0px 5px rgba(20, 20, 20, 1),inset 2px 3px 0px 0px rgba(255, 255, 255, 0.15);
-  background: #444;
-  border: 5px solid #222;
-  border-bottom-color: #111;
-  border-radius: 50%;
-  border-top-color: #333;
-  height: 75%;
-  left: 12.5%;
-  position: relative;
-  top: 12.5%;
-  width: 75%;
+    background: #444;
+    border-bottom-color: #111;
+    border-radius: 50%;
+    border-top-color: #333;
+    border: 5px solid #222;
+    box-shadow: 0px 0px 0px 5px rgba(20, 20, 20, 1),inset 2px 3px 0px 0px rgba(255, 255, 255, 0.15);
+    height: 75%;
+    left: 12.5%;
+    position: relative;
+    top: 12.5%;
+    width: 75%;
 }
 
 .speaker{
-  float:left;
-  height: 30%;
-  position:relative;
-  width: 100%;
+    float:left;
+    height: 30%;
+    position:relative;
+    width: 100%;
 }
 
 .grill {
-  background: #333;
-  border-left: 4px solid #000;
-  border-radius: 2px;
-  border-right: 2px solid #000;
-  border-top: 4px solid #000;
-  float:left;
-  height: 7.5%;
-  left: 5%;
-  margin-top: 5%;
-  position:relative;
-  width: 90%;
+    background: #333;
+    border-left: 4px solid #000;
+    border-radius: 2px;
+    border-right: 2px solid #000;
+    border-top: 4px solid #000;
+    float:left;
+    height: 7.5%;
+    left: 5%;
+    margin-top: 5%;
+    position:relative;
+    width: 90%;
 }
 
 .knob-panel{
-  height: 10%;
-  width: 100%;
+    height: 10%;
+    width: 100%;
 }
 
 .knob {
-  box-shadow: 1px 1px 0px 1px rgba(0, 0, 0, 0.25);
-  background: #333;
-  border-radius: 50%;
-  border: 3px solid #222;
-  height: 75%;
-  position:relative;
-  top: 10%;
-  width: 20%;
+    background: #333;
+    border-radius: 50%;
+    border: 3px solid #222;
+    box-shadow: 1px 1px 0px 1px rgba(0, 0, 0, 0.25);
+    height: 75%;
+    position:relative;
+    top: 10%;
+    width: 20%;
 }
 
 .knob-1{
-  float:left;
-  left: 10%;
+    float:left;
+    left: 10%;
 }
 
 .knob-2{
-  float:right;
-  right: 10%;
+    float:right;
+    right: 10%;
 }
 
 .knob-inner{
-  box-shadow:inset 1px 2px 0px 0px rgba(255, 255, 255, 0.15);
-  background: #333;
-  border: 3px solid #111;
-  border-radius: 50%;
-  border-top-color: #222;
-  height: 90%;
-  left: 5%;
-  position: relative;
-  top: 5%;
-  width: 90%;
+    background: #333;
+    border-radius: 50%;
+    border-top-color: #222;
+    border: 3px solid #111;
+    box-shadow:inset 1px 2px 0px 0px rgba(255, 255, 255, 0.15);
+    height: 90%;
+    left: 5%;
+    position: relative;
+    top: 5%;
+    width: 90%;
 }
 
 .foot{
-  border-radius: 0 0 40% 40%;
-  border: 15px solid rgba(0,0,0,0);
-  border-bottom: 2px solid black;
-  border-top: 200px solid #8C6356;
-  float: left;
-  height: 0px;
-  position: relative;
-  width: 7%;
-  z-index: -2;
+    border-bottom: 2px solid black;
+    border-radius: 0 0 40% 40%;
+    border-top: 200px solid #8C6356;
+    border: 15px solid rgba(0,0,0,0);
+    float: left;
+    height: 0px;
+    position: relative;
+    width: 7%;
+    z-index: -2;
 }
 
 .foot.left-1{
-  left: 10%;
-  top: -30%;
-  transform: skewx(-10deg);
+    left: 10%;
+    top: -30%;
+    transform: skewx(-10deg);
 }
 
 .foot.left-2{
-  left: 9%;
-  top: -40%;
-  transform: skewx(-13deg);
+    left: 9%;
+    top: -40%;
+    transform: skewx(-13deg);
 }
 
 .foot.right-1{
-  left: 63%;
-  top: -40%;
-  transform: skewx(13deg)
+    left: 63%;
+    top: -40%;
+    transform: skewx(13deg);
 }
 
 .foot.right-2{
-  left: 62%;
-  top: -30%;
-  transform: skewx(10deg)
+    left: 62%;
+    top: -30%;
+    transform: skewx(10deg);
 }
 
 .bottom-rim{
-  background: #222;
-  border-bottom-left-radius: 100px;
-  border-bottom-right-radius: 100px;
-  border-top: 24px solid #000;
-  height: 10%;
-  left: 5%;
-  position: relative;
-  width: 90%;
-  z-index: -1;
+    background: #222;
+    border-bottom-left-radius: 100px;
+    border-bottom-right-radius: 100px;
+    border-top: 24px solid #000;
+    height: 10%;
+    left: 5%;
+    position: relative;
+    width: 90%;
+    z-index: -1;
 }
 
 .bottom-rim::after{
-  background: tomato;
-  box-shadow: 0px 0px 100px 10px rgba(0, 0, 0, 0.4);
-  content: '';
-  height: 0px;
-  position: absolute;
-  top: 400%;
-  width: 100%;
+    box-shadow: 0px 0px 100px 10px rgba(0, 0, 0, 0.4);
+    content: '';
+    height: 0px;
+    position: absolute;
+    top: 400%;
+    width: 100%;
 }
