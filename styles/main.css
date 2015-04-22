@@ -17,6 +17,7 @@ canvas {
     width: 100%;
 }
 
+/* Pieces of the television */
 
 .enamel {
     background: #222;
@@ -182,10 +183,10 @@ canvas {
 }
 
 .foot {
+    border: 15px solid rgba(0,0,0,0);
     border-bottom: 2px solid black;
     border-radius: 0 0 40% 40%;
     border-top: 200px solid #8C6356;
-    border: 15px solid rgba(0,0,0,0);
     float: left;
     height: 0px;
     position: relative;
