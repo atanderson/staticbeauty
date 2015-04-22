@@ -1,6 +1,10 @@
+/* Quickie reset */
+
 * {
     box-sizing: border-box;
 }
+
+/* Global */
 
 html,
 body {
@@ -12,6 +16,7 @@ canvas {
     height: 100%;
     width: 100%;
 }
+
 
 .enamel {
     background: #222;
@@ -86,7 +91,7 @@ canvas {
     width: 100%;
 }
 
-.dial{
+.dial {
     background: #333;
     border-bottom-color: #292929;
     border-radius: 50%;
@@ -101,7 +106,7 @@ canvas {
     width: 80%;
 }
 
-.dial-inner{
+.dial-inner {
     background: #444;
     border-bottom-color: #111;
     border-radius: 50%;
@@ -115,7 +120,7 @@ canvas {
     width: 75%;
 }
 
-.speaker{
+.speaker {
     float:left;
     height: 30%;
     position:relative;
@@ -136,7 +141,7 @@ canvas {
     width: 90%;
 }
 
-.knob-panel{
+.knob-panel {
     height: 10%;
     width: 100%;
 }
@@ -152,17 +157,18 @@ canvas {
     width: 20%;
 }
 
-.knob-1{
+/* These classes could be more semantic/objectified */
+.knob-1 {
     float:left;
     left: 10%;
 }
 
-.knob-2{
+.knob-2 {
     float:right;
     right: 10%;
 }
 
-.knob-inner{
+.knob-inner {
     background: #333;
     border-radius: 50%;
     border-top-color: #222;
@@ -175,7 +181,7 @@ canvas {
     width: 90%;
 }
 
-.foot{
+.foot {
     border-bottom: 2px solid black;
     border-radius: 0 0 40% 40%;
     border-top: 200px solid #8C6356;
@@ -187,31 +193,31 @@ canvas {
     z-index: -2;
 }
 
-.foot.left-1{
+.foot.left-1 {
     left: 10%;
     top: -30%;
     transform: skewx(-10deg);
 }
 
-.foot.left-2{
+.foot.left-2 {
     left: 9%;
     top: -40%;
     transform: skewx(-13deg);
 }
 
-.foot.right-1{
+.foot.right-1 {
     left: 63%;
     top: -40%;
     transform: skewx(13deg);
 }
 
-.foot.right-2{
+.foot.right-2 {
     left: 62%;
     top: -30%;
     transform: skewx(10deg);
 }
 
-.bottom-rim{
+.bottom-rim {
     background: #222;
     border-bottom-left-radius: 100px;
     border-bottom-right-radius: 100px;
@@ -223,7 +229,7 @@ canvas {
     z-index: -1;
 }
 
-.bottom-rim::after{
+.bottom-rim::after {
     box-shadow: 0px 0px 100px 10px rgba(0, 0, 0, 0.4);
     content: '';
     height: 0px;
