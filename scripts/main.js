@@ -262,18 +262,19 @@ var showSecret = function (e){
     var width = window.innerWidth;
     var height = window.innerHeight;
     if (pos.x < (width / 2) + 100 && pos.x > (width / 2) - 100 && pos.y < (height /2) + 100 && pos.y > (height/2) - 100){
+        console.log(secretTrigger);
         secretTrigger ++;
     }
 
-    // if (secretTrigger < 50){
-    //     window.requestAnimationFrame(function () {
-    //         drawStatic(pos);
-    //     });
-    // } else {
-    //     setInterval(requestAnimationFrame.bind(this, function(){
-    //         whoaDude();
-    //     }), 10);
-    // }
+    if (secretTrigger < 50){
+        window.requestAnimationFrame(function () {
+            drawStatic(pos);
+        });
+    } else {
+        setInterval(requestAnimationFrame.bind(this, function(){
+            whoaDude();
+        }), 10);
+    }
 };
 
 //Scrolling markers and imgdata replacement
@@ -385,9 +386,9 @@ drawInitialStatic();
 var secretTrigger = 0;
 
 //window.addEventListener('mousemove', refresh, false);
-window.addEventListener('mousemove', showSecret, false);
+// window.addEventListener('mousemove', showSecret, false);
 window.addEventListener('resize', drawInitialStatic, false);
 
 setInterval(requestAnimationFrame.bind(this, function(){
-    drawInitialStatic();
-}), 1);
+    whoaDude();
+}), 10);
